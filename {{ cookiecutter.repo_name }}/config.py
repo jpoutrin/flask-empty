@@ -48,11 +48,17 @@ class Config(object):
     MAIL_PASSWORD = None
     DEFAULT_MAIL_SENDER = "example@%s.com" % project_name
 
-    LOAD_MODULES_EXTENSIONS = ['views', 'models']
+    LOAD_MODULES_EXTENSIONS = ['views', 'models'{% if cookiecutter.use_restless == 'yes' %}, 'rest'{%- endif %}]
 
     EXTENSIONS = [
         {% if cookiecutter.use_sql == 'yes' %}
         'extensions.db',
+        {%- endif %}
+        {% if cookiecutter.use_restless == 'yes' %}
+        'extensions.apimanager',
+        {%- endif %}
+        {% if cookiecutter.use_admin == 'yes' %}
+        'extensions.admin',
         {%- endif %}
         'extensions.toolbar',
     ]
