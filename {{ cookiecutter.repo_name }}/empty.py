@@ -150,11 +150,12 @@ class Empty(Flask):
                 ext = import_string(ext_path)
             except:
                 raise NoExtensionException('No {e_name} extension found'.format(e_name=ext_path))
-
-            if getattr(ext, 'init_app', False):
-                ext.init_app(self)
-            else:
-                ext(self)
+            
+            with self.app_context():
+                if getattr(ext, 'init_app', False):
+                    ext.init_app(self)
+                else:
+                    ext(self)
 
     def configure_before_request(self):
         """
